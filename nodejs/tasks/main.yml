@@ -1,0 +1,33 @@
+---
+# tasks file for nodejs
+
+- name: Create directory to store the node script
+  file:
+    state: directory
+    path: /opt/scripts/
+    mode: 0775
+
+- name: Get script for Nodejs installation from rpm.nodesource.com
+  get_url:
+    url: http://rpm.nodesource.com/setup_9.x
+    dest: "{{ node_script_location }}/nodejs.sh"
+
+- name: Set EXECUTE rights to the nodejs.sh file
+  file:
+    path: "{{ node_script_location }}/nodejs.sh"
+    mode: "u+x"
+
+- name: Execute the installation script
+  shell: "{{ node_script_location }}/nodejs.sh"
+
+- name: Remove the installation script
+  file:
+    path: "{{ node_script_location }}/nodejs.sh"
+    state: absent
+
+- name: Install Node js
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nodejs

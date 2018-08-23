@@ -1,0 +1,7 @@
+---
+- name: Install nodejs
+  hosts: web
+  become: yes
+  gather_facts: false
+  roles:
+    - nodejs
